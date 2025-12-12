@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: libraryapp
+
+  datasource:
+    url: 'jdbc:h2:mem:library'
+    username: 'user'
+    password: ''
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: '/h2-console'
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
