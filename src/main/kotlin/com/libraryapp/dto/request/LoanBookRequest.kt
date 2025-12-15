@@ -1,7 +1,6 @@
-package com.libraryapp.dto.request;
+package com.libraryapp.dto.request
 
-public record LoanBookRequest(
-        String userName,
-        String bookName
-) {
-}
+data class LoanBookRequest(
+    val userName: String,
+    val bookName: String
+)

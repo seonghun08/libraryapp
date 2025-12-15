@@ -1,7 +1,6 @@
-package com.libraryapp.dto.request;
+package com.libraryapp.dto.request
 
-public record BookReturnRequest(
-        String userName,
-        String bookName
-) {
-}
+data class BookReturnRequest(
+    val userName: String,
+    val bookName: String
+)

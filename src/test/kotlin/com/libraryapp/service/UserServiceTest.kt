@@ -51,7 +51,7 @@ class UserServiceTest @Autowired constructor(
         userRepository.saveAll(list)
 
         // when
-        val results = userService.allUsers
+        val results = userService.getAllUsers()
 
         // then
         assertThat(results).hasSize(3)
@@ -64,15 +64,14 @@ class UserServiceTest @Autowired constructor(
     fun updateUserName() {
         // given
         val user = userRepository.save(Users("A", 20))
-        val request = UserUpdateRequest(user.id, "B")
+        val request = UserUpdateRequest(user.id!!, "B")
 
         // when
         userService.updateUserName(request)
 
         // then
-        val isNull = userRepository.findByName("A").getOrNull()
-        val result = userRepository.findByName("B")
-        // val result = userRepository.findById(user.id)
+        val isNull = userRepository.findByName("A")
+        val result = userRepository.findById(user.id)
 
         assertThat(isNull).isNull()
         assertThat(result).isNotNull()

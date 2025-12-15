@@ -1,11 +1,13 @@
-package com.libraryapp.dto.request;
+package com.libraryapp.dto.request
 
-import com.libraryapp.domain.book.Book;
+import com.libraryapp.domain.book.Book
+import com.libraryapp.domain.book.BookType
 
-public record BookRequest(
-        String name
+data class BookRequest(
+    val name: String,
+    val type: BookType
 ) {
-    public Book toEntity() {
-        return new Book(this.name);
+    fun toEntity(): Book {
+        return Book(this.name, this.type)
     }
 }

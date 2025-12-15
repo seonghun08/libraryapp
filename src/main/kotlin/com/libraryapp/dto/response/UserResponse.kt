@@ -1,13 +1,17 @@
-package com.libraryapp.dto.response;
+package com.libraryapp.dto.response
 
-import com.libraryapp.domain.user.Users;
+import com.libraryapp.domain.user.Users
 
-public record UserResponse(
-        long id,
-        String name,
-        Integer age
+data class UserResponse(
+    val id: Long,
+    val name: String,
+    val age: Int?
 ) {
-    public UserResponse(Users user) {
-        this(user.getId(), user.getName(), user.getAge());
+    companion object {
+        fun of(user: Users): UserResponse = UserResponse(
+            id = user.id!!,
+            name = user.name,
+            age = user.age
+        )
     }
 }

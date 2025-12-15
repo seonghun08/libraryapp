@@ -1,12 +1,12 @@
-package com.libraryapp.dto.request;
+package com.libraryapp.dto.request
 
-import com.libraryapp.domain.user.Users;
+import com.libraryapp.domain.user.Users
 
-public record UserCreateRequest(
-        String name,
-        Integer age
+data class UserCreateRequest(
+    val name: String,
+    val age: Int?
 ) {
-    public Users toEntity() {
-        return new Users(this.name, this.age);
+    fun toEntity(): Users {
+        return Users(this.name, this.age)
     }
 }
