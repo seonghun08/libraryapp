@@ -1,8 +1,7 @@
 package com.libraryapp.domain.user
 
 import com.libraryapp.domain.book.Book
-import com.libraryapp.domain.user.loanhistory.LoanBookHistory
-import com.libraryapp.domain.user.loanhistory.UserLoanStatus
+import com.libraryapp.domain.user.loanhistory.UserLoanHistory
 import jakarta.persistence.*
 
 @Entity
@@ -13,11 +12,11 @@ class Users(
     val age: Int?,
 
     @OneToMany(
-        mappedBy = "user",
+        mappedBy = "users",
         cascade = [CascadeType.ALL],
         orphanRemoval = true,
         fetch = FetchType.LAZY)
-    val loanBookHistories: MutableList<LoanBookHistory> = mutableListOf(),
+    val loanBookHistories: MutableList<UserLoanHistory> = mutableListOf(),
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
@@ -33,7 +32,7 @@ class Users(
     }
 
     fun loanBook(book: Book) {
-        this.loanBookHistories.add(LoanBookHistory(this, book.name))
+        this.loanBookHistories.add(UserLoanHistory(this, book.name))
     }
 
     fun returnBook(bookName: String) {

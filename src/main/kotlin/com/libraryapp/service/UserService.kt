@@ -1,8 +1,11 @@
 package com.libraryapp.service
 
 import com.libraryapp.domain.user.UserRepository
+import com.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.libraryapp.dto.request.UserCreateRequest
 import com.libraryapp.dto.request.UserUpdateRequest
+import com.libraryapp.dto.response.BookHistoryResponse
+import com.libraryapp.dto.response.UserLoanHistoryResponse
 import com.libraryapp.dto.response.UserResponse
 import com.libraryapp.util.fail
 import com.libraryapp.util.findByIdOrThrow
@@ -38,5 +41,11 @@ class UserService(
     @Transactional
     fun deleteUser(id: Long) {
         userRepository.deleteById(id)
+    }
+
+    @Transactional(readOnly = true)
+    fun getUserLoanHistories(): List<UserLoanHistoryResponse> {
+        return userRepository.findAllWithHistories()
+            .map(UserLoanHistoryResponse::of)
     }
 }

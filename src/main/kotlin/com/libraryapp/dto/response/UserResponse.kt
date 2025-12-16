@@ -8,10 +8,10 @@ data class UserResponse(
     val age: Int?
 ) {
     companion object {
-        fun of(user: Users): UserResponse = UserResponse(
-            id = user.id!!,
-            name = user.name,
-            age = user.age
+        fun of(users: Users): UserResponse = UserResponse(
+            id = users.id!!,
+            name = users.name,
+            age = users.age
         )
     }
 }

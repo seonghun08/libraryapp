@@ -7,6 +7,9 @@ import com.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.libraryapp.dto.request.BookRequest
 import com.libraryapp.dto.request.BookReturnRequest
 import com.libraryapp.dto.request.LoanBookRequest
+import com.libraryapp.dto.response.BookStatResponse
+import com.libraryapp.repository.BookQuerydslRepository
+import com.libraryapp.repository.UserLoanHistoryQuerydslRepository
 import com.libraryapp.util.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,12 +17,18 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BookService(
     private val bookRepository: BookRepository,
+    private val bookQuerydslRepository: BookQuerydslRepository,
     private val userRepository: UserRepository,
-    private val loanBookHistoryRepository: LoanBookHistoryRepository
+    private val loanBookHistoryRepository: LoanBookHistoryRepository,
+    private val userLoanHistoryQuerydslRepository: UserLoanHistoryQuerydslRepository
 ) {
     @Transactional
     fun saveBook(request: BookRequest): Long {
         return bookRepository.save(request.toEntity()).id!!
+    }
+
+    fun countLoanedBook(): Int {
+        return userLoanHistoryQuerydslRepository.count(UserLoanStatus.LOANED).toInt()
     }
 
     @Transactional
@@ -39,8 +48,15 @@ class BookService(
         if (!bookRepository.existsBookByName(request.bookName)) {
             throw IllegalArgumentException("존재하지 않은 책 이름입니다.")
         }
-
         val user = userRepository.findByNameWithLoanHistories(request.userName) ?: fail()
         user.returnBook(request.bookName)
+    }
+
+    @Transactional(readOnly = true)
+    fun getBookStatistics(): List<BookStatResponse> {
+//        return bookRepository.findAll() // List<Book>
+//            .groupBy { book ->  book.type } // Map<BookType, List<Book>>
+//            .map { (type, books) -> BookStatResponse(type, books.size.toLong()) } // List<BookStatResponse>
+        return bookQuerydslRepository.getStats()
     }
 }

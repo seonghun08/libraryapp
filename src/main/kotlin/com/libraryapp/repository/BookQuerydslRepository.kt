@@ -1,0 +1,26 @@
+package com.libraryapp.repository
+
+import com.libraryapp.domain.book.QBook.book
+import com.libraryapp.dto.response.BookStatResponse
+import com.querydsl.core.types.Projections
+import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.stereotype.Repository
+
+@Repository
+class BookQuerydslRepository(
+    private val query: JPAQueryFactory
+) {
+    fun getStats(): List<BookStatResponse> {
+        return query
+            .select(
+                Projections.constructor(
+                    BookStatResponse::class.java,
+                    book.type,
+                    book.id.count()
+                )
+            )
+            .from(book)
+            .groupBy(book.type)
+            .fetch()
+    }
+}

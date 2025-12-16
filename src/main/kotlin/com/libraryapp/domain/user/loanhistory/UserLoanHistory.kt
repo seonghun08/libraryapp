@@ -11,10 +11,10 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 
 @Entity
-class LoanBookHistory(
+class UserLoanHistory(
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: Users,
+    val users: Users,
 
     val bookName: String,
 
@@ -24,19 +24,22 @@ class LoanBookHistory(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 ) {
+    val isReturn: Boolean
+        get() = this.status == UserLoanStatus.RETURNED
+
     fun doReturn() {
         this.status = UserLoanStatus.RETURNED
     }
 
     companion object {
         fun fixture(
-            user: Users,
+            users: Users,
             bookName: String = "kotlin",
             status: UserLoanStatus = UserLoanStatus.LOANED,
             id: Long? = null
-        ): LoanBookHistory {
-            return LoanBookHistory(
-                user = user,
+        ): UserLoanHistory {
+            return UserLoanHistory(
+                users = users,
                 bookName = bookName,
                 status = status,
                 id = id
